@@ -5,7 +5,7 @@
 \alias{summary.REdaS_ORs}
 \title{Compute (Log) Odds Ratios}
 \description{%
-This function computes the (log-)odds ratio for a \eqn{2\times{}2}{2 × 2} table (\code{x} must be an object of class \code{'table'} either by using \code{\link{table}} or \code{\link{as.table}}). For a \code{data frame} of \eqn{k}{k} variables with 2 categories each, all \eqn{k(k-1)/2}{k · (k − 1) ∕ 2} pairwise (log-)odds-ratios are computed.
+This function computes the (log-)odds ratio (\acronym{OR}) for a \eqn{2\times{}2}{2 × 2} table (\code{x} must be an object of class \code{'table'} either by using \code{\link{table}} or \code{\link{as.table}}). For a \code{data frame} of \eqn{k}{k} variables with 2 categories each, all \eqn{k(k-1)/2}{k · (k − 1) ∕ 2} pairwise (log-)odds-ratios are computed.
 }
 \usage{
 odds_ratios(x)

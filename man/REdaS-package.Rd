@@ -3,8 +3,8 @@
 \alias{REdaS-package}
 \alias{REdaS}
 \docType{package}
-\title{The REdaS Package}
-\description{The REdaS Package provides functions used in the second edition of \dQuote{R: Einführung durch angewandte Statistik}.}
+\title{The \pkg{REdaS} Package}
+\description{The \pkg{REdaS} Package provides functions used in the second edition of \dQuote{\R: Einführung durch angewandte Statistik}.}
 \details{\tabular{ll}{%
 Package:\tab{}REdaS\cr%
 Type:   \tab{}Package\cr%
@@ -13,5 +13,5 @@ Date:   \tab{}\Sexpr[stage=build]{packageDescription("REdaS")$Date}\cr%
 License:\tab{}\Sexpr[stage=build]{packageDescription("REdaS")$License}\cr%
 }}
 \author{Autor and Maintainer: Marco J. Maier \email{marco.maier@wu.ac.at}}
-\references{Hatzinger, R., Hornik, K., Nagel, H., & Maier, M. J. (2014). \emph{R: Einführung durch angewandte Statistik.} München: Pearson Studium.}
+\references{Hatzinger, R., Hornik, K., Nagel, H., & Maier, M. J. (2014). \emph{\R: Einführung durch angewandte Statistik.} München: Pearson Studium.}
 \keyword{package}

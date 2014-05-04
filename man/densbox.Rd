@@ -3,8 +3,8 @@
 \alias{densbox}
 \title{Density-Box-Plots}
 \description{This function draws a (grouped) boxplot-like plot with with kernel density estimators.}
-\usage{densbox(formula, data, rug = FALSE, from, to, gsep = .5,
-    kernel, bw, main, ylab, var_names, horizontal = FALSE, ...)}
+\usage{densbox(formula, data, rug = FALSE, from, to, gsep = .5, kernel, bw, main, ylab,
+    var_names, box_out = TRUE, horizontal = FALSE, ...)}
 \arguments{
   \item{formula}{a \code{formula} object that references elements in \code{data}, see Details}
   \item{data}{a data frame containing the variables specified in formula}
@@ -17,6 +17,7 @@
   \item{main}{a character object for the title}
   \item{ylab}{a character object for the \eqn{y}{y}-axis label}
   \item{var_names}{a character object to print grouping variables' names in the lower left margin -- grouping variables are treated in the order they are given in the formula}
+  \item{box_out}{if \code{TRUE}, outliers treated as in standard boxplots (plotted as stars outside the boxplot's whiskers; default), if \code{FALSE}, outliers are not treated differently, i.e., minimum and maximum will be over the full range, no matter how far individual observations may be from the median with respect to the \acronym{IQR} (\emph{interquartile range}; see \code{\link[grDevices:boxplot.stats]{boxplot.stats}} and \code{\link[stats:fivenum]{fivenum}} for details on the computation of boxplot statistics).}
   \item{horizontal}{not implemented yet\ldots}
   \item{\dots}{further arguments, see Details}
 }
@@ -31,7 +32,9 @@ Subgroups with less than 5 observations will be dropped and \dQuote{\eqn{<5}{< 5
 }
 \author{Marco J. Maier}
 \seealso{
-\code{\link[stats:density]{density}}, \code{\link[graphics:boxplot]{boxplot}}, \code{\link[grid:grid-package]{grid} (Package)}
+\code{\link[stats:density]{density}},
+\code{\link[graphics:boxplot]{boxplot}},
+\pkg{\link[grid:grid-package]{grid}} (Package)
 }
 \examples{
 # plot a density-box-plot of one (log-normal) variable
@@ -49,4 +52,13 @@ with(data2, tapply(y, list(x1, x2), mean))
 # estimator constrained to the interval 0 to 1
 densbox(y ~ x2 + x1, data2, main = "Plot with some\nSpecials",
   var_names = c("Second\nVariable", "First Variable"))
+
+# the same plot with a rug and ignoring outliers in the boxplot
+densbox(y ~ x2 + x1, data2, rug = TRUE, box_out = FALSE)
+
+# density-box-plot with the same data, but no additional space between groups
+# by setting gsep = 0.
+# the kernel density plots have a triangular kernel with a bandwidth of 0.25
+# which results in a "jagged" appearance.
+densbox(y ~ x2 + x1, data2, gsep = 0, kernel = "rectangular", bw = 0.25)
 }

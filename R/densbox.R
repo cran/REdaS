@@ -1,9 +1,9 @@
-densbox <- function(formula, data, rug = FALSE, from, to, gsep = .5, kernel, bw, main, ylab, var_names, horizontal = FALSE, ...){
+densbox <- function(formula, data, rug = FALSE, from, to, gsep = .5, kernel, bw, main, ylab, var_names, box_out = TRUE, horizontal = FALSE, ...){
 
   if(horizontal) stop('"horizontal = TRUE" not implemented yet.', call. = FALSE)
 
   if(missing(...)) ddd <- list() else ddd <- list(...)
-  for(i in c("gp", "gp.main", "gp.dens", "gp.varn", "gp.xlab")){ if(i %in% names(ddd)){ next } else { ddd[[i]] <- list() } }
+  for(i in c("gp", "gp.main", "gp.dens", "gp.varn", "gp.xlab", "gp.box")){ if(i %in% names(ddd)){ next } else { ddd[[i]] <- list() } }
 
   if(missing(kernel)) kernel <- NULL
   kde_settings <- list(kernel = match.arg(kernel, c("gaussian", "epanechnikov", "rectangular", "triangular", "biweight", "cosine", "optcosine")))
@@ -61,12 +61,13 @@ densbox <- function(formula, data, rug = FALSE, from, to, gsep = .5, kernel, bw,
   }
   x_offset <- c(list(seq_along(y_da)), x_offset)
 
+  # compute statistics for the plot
   db_stats <- lapply(y_da, function(x){
     if(length(x) < 5){
       list(NULL)
     } else {
       list(
-        boxp  = boxplot.stats(x),
+        boxp  = boxplot.stats(x, do.conf = FALSE, do.out = box_out, coef = ifelse(box_out, as.list(args(boxplot.stats))[["coef"]], 0)),
         dens  = do.call("density", modifyList(list(x = x), kde_settings)),
         means = mean(x)
       )
@@ -94,10 +95,11 @@ densbox <- function(formula, data, rug = FALSE, from, to, gsep = .5, kernel, bw,
   ### PROCESS OPTIONS (to be implemented & documented ...)
   gp      <- modifyList(gpar(fontsize = 10, lineheight = 1.1), ddd[["gp"]])
   gp.main <- modifyList(gpar(fontface="bold", fontsize = gp$fontsize*1.2), ddd[["gp.main"]])
-  gp.dens <- modifyList(gpar(fill="#000000", lwd=0), ddd[["gp.dens"]])
+  gp.dens <- modifyList(gpar(fill="#000000", lty = "blank"), ddd[["gp.dens"]])
   gp.varn <- modifyList(gpar(), ddd[["gp.varn"]])
   gp.ylab <- modifyList(gpar(), ddd[["gp.xlab"]])
   gp.xlab <- modifyList(gpar(), ddd[["gp.xlab"]])
+  gp.box  <- modifyList(gpar(fill=gray(.75, .5), col=gray(0)), ddd[["gp.box"]])
   
   
   
@@ -280,6 +282,7 @@ densbox <- function(formula, data, rug = FALSE, from, to, gsep = .5, kernel, bw,
       y1 = unit(y_at[i], "native"),
       gp = gpar(lty=2, col=gray(.875)))
   }
+  # cycle through all groups
   for(i in seq_along(x_at)){
     # vertical lines
     grid.segments(
@@ -290,37 +293,19 @@ densbox <- function(formula, data, rug = FALSE, from, to, gsep = .5, kernel, bw,
       gp = gpar(lty = 3, col = gray(.750))
     )
 
-    # densities
+    # if the current group has >= 5 obs.
     if(!is.null(db_stats[[i]][[1L]])){
-      dens_len <- length(db_stats[[i]]$dens$x)
-      grid.polygon(
-        x = -c(0, db_stats[[i]]$dens$y, 0)/ymax_dens[i] + x_at[i],
-        y = db_stats[[i]]$dens$x[c(1, seq_len(dens_len), dens_len)],
-        gp = gp.dens,
-        default.units="native"
-      )
-
       # boxes
       ystats <- c(db_stats[[i]]$boxp$stats, db_stats[[i]]$means)
       
-      # outliers
-      if((y_box_out_length <- length(db_stats[[i]]$boxp$out)) > 0){
-        grid.points(
-          x    = unit(rep(x_at[i], y_box_out_length), "native") + unit(4, "bigpts"),
-          y    = unit(db_stats[[i]]$boxp$out, "native"),
-          pch  = 8L,
-          size = unit(4, "bigpts"),
-          gp   = gpar(col = gray(0))
-        )
-      }
-
+      # box-background
       grid.rect(
         x      = unit(x_at[i], "native"),
         y      = unit(ystats[2L], "native"),
         width  = unit(.25, "native"),
         height = unit(abs(diff(ystats[c(2L, 4L)])), "native"),
         just   = c(0, 0),
-        gp     = gpar(fill=gray(.75, .5), col=gray(0))
+        gp     = modifyList(gp.box, list(lty = "blank"))
       )
 
       # rug?
@@ -334,13 +319,24 @@ densbox <- function(formula, data, rug = FALSE, from, to, gsep = .5, kernel, bw,
         )
       }
 
+      # min, median, max
       grid.segments(
         x0 = unit(x_at[i], "native"),
-        x1 = unit(x_at[i] + c(.2,.25,.2), "native"),
-        y0 = unit(ystats[c(1L, 3L, 5L)], "native"),
-        y1 = unit(ystats[c(1L, 3L, 5L)], "native"),
+        x1 = unit(x_at[i] + c(0,.2,.25,.2), "native"),
+        y0 = unit(ystats[c(1L, 1L, 3L, 5L)], "native"),
+        y1 = unit(ystats[c(5L, 1L, 3L, 5L)], "native"),
         gp = gpar(col=gray(0), lwd=1)
       )
+      # box-border
+      grid.rect(
+        x      = unit(x_at[i], "native"),
+        y      = unit(ystats[2L], "native"),
+        width  = unit(.25, "native"),
+        height = unit(abs(diff(ystats[c(2L, 4L)])), "native"),
+        just   = c(0, 0),
+        gp     = modifyList(gp.box, list(fill = "transparent"))
+      )
+      # mean
       grid.segments(
         x0 = unit(x_at[i], "native"),
         x1 = unit(x_at[i] + .3, "native"),
@@ -348,13 +344,33 @@ densbox <- function(formula, data, rug = FALSE, from, to, gsep = .5, kernel, bw,
         y1 = unit(ystats[6L], "native"),
         gp = gpar(lty=2, col=gray(0), lwd=1)
       )
+      # outliers
+      if((y_box_out_length <- length(db_stats[[i]]$boxp$out)) > 0){
+        grid.points(
+          x    = unit(rep(x_at[i], y_box_out_length), "native") + unit(4, "bigpts"),
+          y    = unit(db_stats[[i]]$boxp$out, "native"),
+          pch  = 8L,
+          size = unit(4, "bigpts"),
+          gp   = gpar(col = gray(0))
+        )
+      }
+
+      # densities
+      dens_len <- length(db_stats[[i]]$dens$x)
+      grid.polygon(
+        x = -c(0, db_stats[[i]]$dens$y, 0)/ymax_dens[i] + x_at[i],
+        y = db_stats[[i]]$dens$x[c(1, seq_len(dens_len), dens_len)],
+        gp = gp.dens,
+        default.units="native"
+      )
+    # if the current group has < 5 obs.
     } else {
       grid.text(
         label = expression(""<5),
         x     = unit(x_at[i], "native"),
         y     = unit(.5, "npc")
       )
-      
+      warning("at least one group with < 5 observations was present.")
     }
   }
 

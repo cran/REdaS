@@ -4,7 +4,7 @@
 \alias{print.freqCI}
 \alias{barplot.freqCI}
 \title{Confidence Intervals for Relative Frequencies}
-\description{This function computes (one or more) confidence intervals for a vector of observations or a \code{table} object and returns an object of class \code{'freqCI'} to draw a bar plot of the results.}
+\description{This function computes (one or more) confidence intervals (\acronym{CI}s) for a vector of observations or a \code{table} object and returns an object of class \code{'freqCI'} to draw a bar plot of the results.}
 \usage{freqCI(x, level = 0.95)
 
 \method{print}{freqCI}(x, percent = TRUE, digits, ...)

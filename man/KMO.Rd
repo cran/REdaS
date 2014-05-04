@@ -5,11 +5,11 @@
 \title{Kaiser-Meyer-Olkin Statistics}
 \description{description}
 \usage{
-KMOS(x, use = c("everything", "all.obs", "complete.obs",
-                "na.or.complete", "pairwise.complete.obs"))
+KMOS(x, use = c("everything", "all.obs", "complete.obs", "na.or.complete",
+    "pairwise.complete.obs"))
 
 \method{print}{MSA_KMO}(x, stats = c("both", "MSA", "KMO"), vars = "all",
-      sort = FALSE, show = "all", digits = getOption("digits"), \ldots)
+    sort = FALSE, show = "all", digits = getOption("digits"), \ldots)
 }
 \arguments{
   \item{x}{The data \eqn{\mathbf{X}}{X} for \code{KMOS()}, an object of class \code{'MSA_KMO'} for the \code{print} method.}
