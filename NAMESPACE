@@ -1,19 +1,21 @@
-importFrom(graphics, plot, barplot)
+import("grid")
+importFrom("graphics", "plot", "barplot")
 
-export(rad2deg); export(deg2rad)
+export("rad2deg")
+export("deg2rad")
 
-export(freqCI)
-  S3method(print, freqCI)
-  S3method(barplot, freqCI)
+export("freqCI")
+  S3method("print", "freqCI")
+  S3method("barplot", "freqCI")
   
-export(bart_spher)
-  S3method(print, bart_spher)
+export("bart_spher")
+  S3method("print", "bart_spher")
 
-export(KMOS)
-  S3method(print, MSA_KMO)
+export("KMOS")
+  S3method("print", "MSA_KMO")
   
-export(odds_ratios)
-  S3method(print, REdaS_ORs)
-  S3method(summary, REdaS_ORs)
+export("odds_ratios")
+  S3method("print", "REdaS_ORs")
+  S3method("summary", "REdaS_ORs")
 
-export(densbox)
+export("densbox")

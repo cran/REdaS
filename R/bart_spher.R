@@ -41,9 +41,9 @@ bart_spher <- function(x, use = c("everything", "all.obs", "complete.obs", "na.o
          "use"     = use,
          "n"       = n,
          "k"       = k,
-         "X2"      = X2,
+         "X2"      = as.numeric(X2), # remove attributes
          "df"      = df,
-         "p.value" = p,
+         "p.value" = as.numeric(p),
          "warn"    = warn),
     "class" = "bart_spher"
   )

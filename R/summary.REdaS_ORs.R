@@ -14,7 +14,8 @@ summary.REdaS_ORs <- function(object, ...){
     print(object$tables[[i]])
     writeLines(paste0("\nOdds-Ratio = ", round(object$ORs[[i]]$or, 3)))
     writeLines(paste0("Log(Odds-Ratio) = ", round(object$ORs[[i]]$lor, 3), ", Standard Error = ", round(object$ORs[[i]]$se, 3)))
-    writeLines(paste0("z-value = ", round(object$ORs[[i]]$z, 3), ", p-value = ", round(object$ORs[[i]]$p, 3)))
+    pv <- my.format.pval(object$ORs[[i]]$p, 5L)
+    writeLines(paste0("z-value = ", round(object$ORs[[i]]$z, 3), ", p-value", ifelse(pure_all.equal(0, round(object$ORs[[i]]$p, 5L)), " ", " = "), pv))
     if(i < n_tabs) cat("\n")
   }
   if(interactive()) writeLines("")

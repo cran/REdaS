@@ -58,7 +58,7 @@ densbox(y ~ x2 + x1, data2, rug = TRUE, box_out = FALSE)
 
 # density-box-plot with the same data, but no additional space between groups
 # by setting gsep = 0.
-# the kernel density plots have a triangular kernel with a bandwidth of 0.25
+# the kernel density plots have a rectangular kernel with a bandwidth of 0.25
 # which results in a "jagged" appearance.
 densbox(y ~ x2 + x1, data2, gsep = 0, kernel = "rectangular", bw = 0.25)
 }
