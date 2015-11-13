@@ -1,5 +1,8 @@
+import("stats")
 import("grid")
 importFrom("graphics", "plot", "barplot")
+importFrom("grDevices", "axisTicks", "boxplot.stats", "gray")
+importFrom("utils", "combn", "modifyList")
 
 export("rad2deg")
 export("deg2rad")

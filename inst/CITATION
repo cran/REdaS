@@ -12,7 +12,7 @@ bibentry(
   note    = paste0("{", note, "}"),
   url     = "http://CRAN.R-project.org/package=REdaS"#,
 #
-#  textVersion = paste0("Maier, M. J. (", year, "). Companion Package to the Book “R: Einführung durch angewandte Statistik”. ", note, ".")
+#  textVersion = paste0("Maier, M. J. (", year, "). Companion Package to the Book 'R: Einführung durch angewandte Statistik'. ", note, ".")
 )
 
 bibentry(
